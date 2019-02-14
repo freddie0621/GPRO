@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html><head>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width">
+
+<title>Basic GOPRO CONTROLE</title>
+
+<script>
+function toto(finimage){
+alert('toto');
+}
+
+function dirimages(finimage){
+var xmlhttp = new XMLHttpRequest();
+var countfichiers;
+var lastimagename;
+xmlhttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    var myObj = JSON.parse(this.responseText);
+
+//SCAN MP4
+var MP4Array = myObj.media[0]["fs"].filter(function (el) {
+return el.n.endsWith("MP4")===true; // Changed this so a home would match
+});
+console.log(MP4Array);
+var last_element_MP4 = MP4Array[MP4Array.length - 1];
+console.log(last_element_MP4.n);	
+document.getElementById('gopro_video').src='http://10.5.5.9:8080/videos/DCIM/101GOPRO/'+last_element_MP4.n;
+//FIN SCAN MP4
+
+
+//SCAN JPG
+var JPGArray = myObj.media[0]["fs"].filter(function (el) {
+return el.n.endsWith("JPG")===true; // Changed this so a home would match
+});
+console.log(JPGArray);
+var last_element_JPG = JPGArray[JPGArray.length - 1];
+var last1_element_JPG = JPGArray[JPGArray.length - 2];
+var last2_element_JPG = JPGArray[JPGArray.length - 3];
+console.log(last_element_JPG.n);	
+
+document.getElementById('gopro_photo').src='http://10.5.5.9:8080/videos/DCIM/101GOPRO/'+last2_element_JPG.n;
+
+
+
+
+//FIN SCAN JPG
+
+
+
+
+
+	
+	//console.log(myObj);
+    //document.getElementById("demo").innerHTML = myObj.media[0]["d"];
+	//document.getElementById("demo").innerHTML = myObj.media[0]["fs"][0]["n"];
+	countfichiers = myObj.media[0]["fs"].length;
+	//alert(countfichiers);
+	//document.getElementById("demo").innerHTML =countfichiers ;
+	lastimagename = myObj.media[0]["fs"][countfichiers-1]["n"];
+	
+	//document.getElementById("demo").innerHTML=lastimagename;
+	document.getElementById("demo").innerHTML=lastimagename.replace(/\.[^/.]+$/, "")
+	//document.getElementById('gopro_photo').src='http://10.5.5.9:8080/videos/DCIM/101GOPRO/'+lastimagename; 
+	
+	
+
+	
+	
+  }
+};
+//xmlhttp.open("GET", "gpMediaList.json", true);
+//xmlhttp.open("GET", "http://10.5.5.9:8080/gp/gpMediaList", true);
+xmlhttp.open("GET", "http://10.5.5.9:8080/gp/gpMediaList", true);
+//xmlhttp.open("GET", "gpMediaList.json", true);
+xmlhttp.send();
+
+}
+
+function commandegopro(urlgopro){
+console.log(urlgopro);
+var xmlhttp = new XMLHttpRequest(),
+  method = 'GET',
+  //url = 'http://10.5.5.9/camera/SH?t=berckberck&p=%01';
+  url
+  ;
+  //BEEP url = 'http://10.5.5.9/camera/BS?t=berckberck&p=%02';
+
+xmlhttp.open(method, urlgopro, true);
+xmlhttp.onload = function () {
+  // Do something with the retrieved data ( found in xmlhttp.response )
+};
+xmlhttp.send();
+  
+}	
+
+function dirburst(finimage){
+var xmlhttp = new XMLHttpRequest();
+var countfichiers;
+var lastimagename;
+xmlhttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    var myObj = JSON.parse(this.responseText);
+
+//SCAN MP4
+var MP4Array = myObj.media[0]["fs"].filter(function (el) {
+return el.n.endsWith("MP4")===true; // Changed this so a home would match
+});
+console.log(MP4Array);
+var last_element_MP4 = MP4Array[MP4Array.length - 1];
+console.log(last_element_MP4.n);	
+document.getElementById('gopro_video').src='http://10.5.5.9:8080/videos/DCIM/101GOPRO/'+last_element_MP4.n;
+//FIN SCAN MP4
+
+
+//SCAN JPG
+var JPGArray = myObj.media[0]["fs"].filter(function (el) {
+return el.n.endsWith("JPG")===true; // Changed this so a home would match
+});
+console.log(JPGArray);
+var last_element_JPG = JPGArray[JPGArray.length - 1];
+
+//console.log(last_element_JPG.n);
+//console.log(last_element_JPG.g);
+//console.log(last_element_JPG.b);
+//console.log("G0"+last_element_JPG.g+last_element_JPG.b+".JPG");	
+var BURST = document.getElementById("BURST");
+BURST.innerHTML = '';
+
+
+
+var pas;
+for (pas = last_element_JPG.b; pas <= last_element_JPG.l; pas++) {
+  // Ceci sera exécuté 5 fois
+  // À chaque éxécution, la variable "pas" augmentera de 1
+  // Lorsque'elle sera arrivée à 5, le boucle se terminera.
+  console.log("G0"+last_element_JPG.g+pas+".JPG");	
+  var img = document.createElement("img");
+  
+  img.src = 'http://10.5.5.9:8080/videos/DCIM/101GOPRO/'+"G0"+last_element_JPG.g+pas+".JPG";
+  img.width="300";
+  var src = document.getElementById("BURST");
+  src.appendChild(img);
+}
+
+
+
+
+
+
+document.getElementById('gopro_photo').src='http://10.5.5.9:8080/videos/DCIM/101GOPRO/'+last_element_JPG.n;
+
+
+
+
+//FIN SCAN JPG
+
+
+
+
+
+	
+	//console.log(myObj);
+    //document.getElementById("demo").innerHTML = myObj.media[0]["d"];
+	//document.getElementById("demo").innerHTML = myObj.media[0]["fs"][0]["n"];
+	countfichiers = myObj.media[0]["fs"].length;
+	//alert(countfichiers);
+	//document.getElementById("demo").innerHTML =countfichiers ;
+	lastimagename = myObj.media[0]["fs"][countfichiers-1]["n"];
+	
+	//document.getElementById("demo").innerHTML=lastimagename;
+	document.getElementById("demo").innerHTML=lastimagename.replace(/\.[^/.]+$/, "")
+	//document.getElementById('gopro_photo').src='http://10.5.5.9:8080/videos/DCIM/101GOPRO/'+lastimagename; 
+	
+	
+
+	
+	
+  }
+};
+//xmlhttp.open("GET", "gpMediaList.json", true);
+xmlhttp.open("GET", "http://10.5.5.9:8080/gp/gpMediaList", true);
+
+//xmlhttp.open("GET", "gpMediaList.json", true);
+xmlhttp.send();
+
+}
+
+
+
+</script>
+
+
+
+
+
+
+</head>
+
+<body onLoad="dirimages(7200);toto()">
+
+<button onclick="commandegopro('http://10.5.5.9/camera/LB?t=berckberck&p=%00');setTimeout(function(){ dirimages(7200); }, 2000)">0 LEDS</button>
+<button onclick="commandegopro('http://10.5.5.9/camera/LB?t=berckberck&p=%01');setTimeout(function(){ dirimages(7200); }, 2000)">2 LEDS</button>
+<button onclick="commandegopro('http://10.5.5.9/camera/LB?t=berckberck&p=%02');setTimeout(function(){ dirimages(7200); }, 2000)">4 LEDS</button>
+<br>
+<button onclick="commandegopro('http://10.5.5.9/camera/BS?t=berckberck&p=%00');setTimeout(function(){ dirimages(7200); }, 2000)">BEEP OFF</button>
+<button onclick="commandegopro('http://10.5.5.9/camera/BS?t=berckberck&p=%01');setTimeout(function(){ dirimages(7200); }, 2000)">BEEP 70%</button>
+<button onclick="commandegopro('http://10.5.5.9/camera/BS?t=berckberck&p=%02');setTimeout(function(){ dirimages(7200); }, 2000)">BEEP 100%</button>
+<br>
+MODE PAR DEFAUT 
+<button onclick="commandegopro('http://10.5.5.9/camera/DM?t=berckberck&p=%00');setTimeout(function(){ dirimages(7200); }, 2000)">VIDEO</button>
+<button onclick="commandegopro('http://10.5.5.9/camera/DM?t=berckberck&p=%01');setTimeout(function(){ dirimages(7200); }, 2000)">PHOTO</button>
+<button onclick="commandegopro('http://10.5.5.9/camera/DM?t=berckberck&p=%02');setTimeout(function(){ dirimages(7200); }, 2000)">BURST</button>
+<button onclick="commandegopro('http://10.5.5.9/camera/DM?t=berckberck&p=%03');setTimeout(function(){ dirimages(7200); }, 2000)">TIMELAPSE</button>
+<br>
+
+MODE 
+<button onclick="commandegopro('http://10.5.5.9/camera/CM?t=berckberck&p=%00');setTimeout(function(){ dirimages(7200); }, 2000)">VIDEO</button>
+<button onclick="commandegopro('http://10.5.5.9/camera/CM?t=berckberck&p=%01');setTimeout(function(){ dirimages(7200); }, 2000)">PHOTO</button>
+<button onclick="commandegopro('http://10.5.5.9/camera/CM?t=berckberck&p=%02');setTimeout(function(){ dirimages(7200); }, 2000)">BURST</button>
+<button onclick="commandegopro('http://10.5.5.9/camera/CM?t=berckberck&p=%03');setTimeout(function(){ dirimages(7200); }, 2000)">TIMELAPSE</button>
+<br>
+
+<button onclick="commandegopro('http://10.5.5.9/camera/SH?t=berckberck&p=%01');setTimeout(function(){ dirimages(7200); }, 2000)">PRENDRE UNE PHOTO</button>
+<button onclick="commandegopro('http://10.5.5.9/camera/SH?t=berckberck&p=%01');setTimeout(function(){ dirburst(7200); }, 6000)">PRENDRE UNE SERIE</button>
+<button onclick="commandegopro('http://10.5.5.9/camera/SH?t=berckberck&p=%00');setTimeout(function(){ dirimages(7200); }, 2000)">STOP</button>
+
+
+<p id="demo"></p>
+
+
+<p>Take a look at <a href="http://10.5.5.9:8080/gp/gpMediaList" target="_blank">gpmediaList</a></p>
+
+<img id="gopro_photo" src="pic_bulboff.gif" style="width:500px">
+
+<br>
+
+<div id="BURST"></div>
+<video id="gopro_video" width="500"   preload="auto" controls>
+   
+</video>
+
+ <img src= "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QMTDTQZw1koQgAAAVNJREFUOMvFkjFLQmEUhp/j/a5FOKgUNJRkQ4Ha2G70Dxya2mqqn1N7BC3+C9daQmppEYyK0CLDgnu997unwTSza0QEveN3Xh7e75wX/kq3a6u/8grATWl1HdgQIQ2kgGnABZx3nwUCwANeVHkGaguXV6fSLKxsiVBFAB0gv9HAo6DKtrGq+/1H+TDwA4gqwJ6xkeb7RP1sCIIRqILrfk2n5I2NNDM0DuQ4zB0fob7fX9RUkvbuDkRj8VQzJozURcYGvYBEq0W6UgGgU60S+j0wzngCV+r5ZQ9havybiVSKUr0OwEWxiHpe3C6ssaoB+hUQPnV4ODkh8n3C7is4ibh1BnK2uNREyMVNTTaLBgG22510jTtjI21MAtj240jdYgENE6oeEFEeVlMm3J2Pi470+FAAavO5gsAmMAvMANMKScAMwgj03qv8CnQUauX763P+XW/WkYfpqwsWmwAAAABJRU5ErkJggg=="/>
+
+</div></body>
+
+</html>
