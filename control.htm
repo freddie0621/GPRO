@@ -1,143 +1,57 @@
 <!DOCTYPE html>
 <html><head>
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width">
+<meta http-equiv="content-type" content="text/html; charset=windows-1252"></head><body>
 
-<title>Basic GOPRO CONTROLE</title>
+<h2>Use the XMLHttpRequest to get the content of a file.</h2>
+<p>The content is written in JSON format, and can easily be converted into a JavaScript object.</p>
+
+<p id="demo">undefined</p>
 
 <script>
-function toto(finimage){
-alert('toto');
-}
-
-function dirimages(finimage){
 var xmlhttp = new XMLHttpRequest();
 var countfichiers;
 var lastimagename;
 xmlhttp.onreadystatechange = function() {
   if (this.readyState == 4 && this.status == 200) {
     var myObj = JSON.parse(this.responseText);
-
-//SCAN MP4
-var MP4Array = myObj.media[0]["fs"].filter(function (el) {
-return el.n.endsWith("MP4")===true; // Changed this so a home would match
-});
-console.log(MP4Array);
-var last_element_MP4 = MP4Array[MP4Array.length - 1];
-console.log(last_element_MP4.n);	
-document.getElementById('gopro_video').src='http://10.5.5.9:8080/videos/DCIM/101GOPRO/'+last_element_MP4.n;
-//FIN SCAN MP4
-
-
-//SCAN JPG
-var JPGArray = myObj.media[0]["fs"].filter(function (el) {
-return el.n.endsWith("JPG")===true; // Changed this so a home would match
-});
-console.log(JPGArray);
-var last_element_JPG = JPGArray[JPGArray.length - 1];
-console.log(last_element_JPG.n);	
-document.getElementById('gopro_photo').src='http://10.5.5.9:8080/videos/DCIM/101GOPRO/'+last_element_JPG.n;
-//FIN SCAN JPG
-
-
-
-
-
-	
-	//console.log(myObj);
     //document.getElementById("demo").innerHTML = myObj.media[0]["d"];
 	//document.getElementById("demo").innerHTML = myObj.media[0]["fs"][0]["n"];
-	//countfichiers = myObj.media[0]["fs"].length;
-	//document.getElementById("demo").innerHTML =countfichiers ;
-	//lastimagename = myObj.media[0]["fs"][countfichiers-1]["n"];
+	countfichiers = myObj.media[0]["fs"].length;
+	document.getElementById("demo").innerHTML =countfichiers ;
+	lastimagename = myObj.media[0]["fs"][countfichiers-1]["n"];
 	
-	//document.getElementById("demo").innerHTML=lastimagename;
-	//document.getElementById('gopro_photo').src='http://10.5.5.9:8080/videos/DCIM/101GOPRO/'+lastimagename; 
-	
-	
-
-	
-	
+	document.getElementById("demo").innerHTML=lastimagename;
+	document.getElementById('myImage').src='http://10.5.5.9:8080/videos/DCIM/101GOPRO/'+lastimagename; 
   }
 };
-xmlhttp.open("GET", "gpMediaList.json", true);
-//xmlhttp.open("GET", "http://10.5.5.9:8080/gp/gpMediaList", true);
 //xmlhttp.open("GET", "gpMediaList.json", true);
+xmlhttp.open("GET", "http://10.5.5.9:8080/gp/gpMediaList", true);
 xmlhttp.send();
-
-
-
-
-}
-
-function commandegopro(urlgopro){
-console.log(urlgopro);
-var xmlhttp = new XMLHttpRequest(),
-  method = 'GET',
-  //url = 'http://10.5.5.9/camera/SH?t=berckberck&p=%01';
-  url
-  ;
-  //BEEP url = 'http://10.5.5.9/camera/BS?t=berckberck&p=%02';
-
-xmlhttp.open(method, urlgopro, true);
-xmlhttp.onload = function () {
-  // Do something with the retrieved data ( found in xmlhttp.response )
-};
-xmlhttp.send();
-  
-}	
-
 </script>
 
-
-
-
-
-
-</head>
-
-<body onLoad="dirimages(7200);toto()">
-
-<button onclick="commandegopro('http://10.5.5.9/camera/LB?t=berckberck&p=%00');setTimeout(function(){ dirimages(7200); }, 2000)">0 LEDS</button>
-<button onclick="commandegopro('http://10.5.5.9/camera/LB?t=berckberck&p=%01');setTimeout(function(){ dirimages(7200); }, 2000)">2 LEDS</button>
-<button onclick="commandegopro('http://10.5.5.9/camera/LB?t=berckberck&p=%02');setTimeout(function(){ dirimages(7200); }, 2000)">4 LEDS</button>
-<br>
-<button onclick="commandegopro('http://10.5.5.9/camera/BS?t=berckberck&p=%00');setTimeout(function(){ dirimages(7200); }, 2000)">BEEP OFF</button>
-<button onclick="commandegopro('http://10.5.5.9/camera/BS?t=berckberck&p=%01');setTimeout(function(){ dirimages(7200); }, 2000)">BEEP 70%</button>
-<button onclick="commandegopro('http://10.5.5.9/camera/BS?t=berckberck&p=%02');setTimeout(function(){ dirimages(7200); }, 2000)">BEEP 100%</button>
-<br>
-MODE PAR DEFAUT 
-<button onclick="commandegopro('http://10.5.5.9/camera/DM?t=berckberck&p=%00');setTimeout(function(){ dirimages(7200); }, 2000)">VIDEO</button>
-<button onclick="commandegopro('http://10.5.5.9/camera/DM?t=berckberck&p=%01');setTimeout(function(){ dirimages(7200); }, 2000)">PHOTO</button>
-<button onclick="commandegopro('http://10.5.5.9/camera/DM?t=berckberck&p=%02');setTimeout(function(){ dirimages(7200); }, 2000)">BURST</button>
-<button onclick="commandegopro('http://10.5.5.9/camera/DM?t=berckberck&p=%03');setTimeout(function(){ dirimages(7200); }, 2000)">TIMELAPSE</button>
-<br>
-
-MODE 
-<button onclick="commandegopro('http://10.5.5.9/camera/CM?t=berckberck&p=%00');setTimeout(function(){ dirimages(7200); }, 2000)">VIDEO</button>
-<button onclick="commandegopro('http://10.5.5.9/camera/CM?t=berckberck&p=%01');setTimeout(function(){ dirimages(7200); }, 2000)">PHOTO</button>
-<button onclick="commandegopro('http://10.5.5.9/camera/CM?t=berckberck&p=%02');setTimeout(function(){ dirimages(7200); }, 2000)">BURST</button>
-<button onclick="commandegopro('http://10.5.5.9/camera/CM?t=berckberck&p=%03');setTimeout(function(){ dirimages(7200); }, 2000)">TIMELAPSE</button>
-<br>
-
-<button onclick="commandegopro('http://10.5.5.9/camera/SH?t=berckberck&p=%01');setTimeout(function(){ dirimages(7200); }, 2000)">PRENDRE UNE PHOTO</button>
-
-
-
-<p id="demo"></p>
-
-
 <p>Take a look at <a href="http://10.5.5.9:8080/gp/gpMediaList" target="_blank">gpmediaList</a></p>
-<img id="gopro_photo" src="pic_bulboff.gif" style="width:500px">
-<br>
-<video id="gopro_video" width="500"   preload="auto" controls>
-    <source src="http://10.5.5.9:8080/DCIM/101GOPRO/GOPR5558348.MP4" type="video/mp4">
-</video>
+<img id="myImage" src="pic_bulboff.gif" style="width:500px">
 
- <img src= "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QMTDTQZw1koQgAAAVNJREFUOMvFkjFLQmEUhp/j/a5FOKgUNJRkQ4Ha2G70Dxya2mqqn1N7BC3+C9daQmppEYyK0CLDgnu997unwTSza0QEveN3Xh7e75wX/kq3a6u/8grATWl1HdgQIQ2kgGnABZx3nwUCwANeVHkGaguXV6fSLKxsiVBFAB0gv9HAo6DKtrGq+/1H+TDwA4gqwJ6xkeb7RP1sCIIRqILrfk2n5I2NNDM0DuQ4zB0fob7fX9RUkvbuDkRj8VQzJozURcYGvYBEq0W6UgGgU60S+j0wzngCV+r5ZQ9havybiVSKUr0OwEWxiHpe3C6ssaoB+hUQPnV4ODkh8n3C7is4ibh1BnK2uNREyMVNTTaLBgG22510jTtjI21MAtj240jdYgENE6oeEFEeVlMm3J2Pi470+FAAavO5gsAmMAvMANMKScAMwgj03qv8CnQUauX763P+XW/WkYfpqwsWmwAAAABJRU5ErkJggg=="/>
-
-</div></body>
-
-</html>
+<div id="yt2pIconContextMenu" style="display: none; --yt2p-padding:8px; --yt2p-padding-half:4px; --yt2p-iconsize:16px;" yt2p-theme="default"><div class="yt2p-playergroup"><div class="yt2p-player"><input type="image" class="yt2p-playerbutton" title="Send to player" src="control1_fichiers/player.png"></div></div></div><div id="yt2pLoaded" style="display: none;"></div></body><script>
+  {
+    const open = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function (method, url) {
+      open.apply(this, arguments);
+      this.addEventListener('readystatechange', function _() {
+        if(this.readyState == this.HEADERS_RECEIVED) {
+          const contentType = this.getResponseHeader('Content-Type') || '';
+          if (contentType.startsWith('video/') || contentType.startsWith('audio/')) {
+            window.postMessage({
+              source: 'xmlhttprequest-open',
+              url,
+              mime: contentType,
+              method,
+              contentType
+            }, '*');
+          }
+          this.removeEventListener('readystatechange', _);
+        }
+      })
+    }
+  }
+  </script></html>
